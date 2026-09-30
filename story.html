@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ты — Мальчик | Белый пароход</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: #071315;
+            color: #f2f4f1;
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+        }
+
+        .story {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER */
+
+        header {
+            height: 80px;
+            border-bottom: 1px solid rgba(255,255,255,.12);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 6%;
+        }
+
+        .logo {
+            font-weight: 700;
+            letter-spacing: 4px;
+            font-size: 18px;
+        }
+
+        .counter {
+            color: #9ba8a6;
+            font-size: 14px;
+            letter-spacing: 2px;
+        }
+
+        /* PROGRESS */
+
+        .progress {
+            height: 3px;
+            width: 100%;
+            background: rgba(255,255,255,.08);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 14.28%;
+            background: #e9eee9;
+            transition: width .5s ease;
+        }
+
+        /* MAIN */
+
+        main {
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 50px 6% 80px;
+        }
+
+        .label {
+            color: #8b9a97;
+            font-size: 12px;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: clamp(38px, 5vw, 76px);
+            line-height: .95;
+            max-width: 900px;
+            margin-bottom: 25px;
+        }
+
+        .description {
+            color: #aeb9b6;
+            max-width: 760px;
+            font-size: 18px;
+            line-height: 1.6;
+            margin-bottom: 35px;
+        }
+
+        /* IMAGE */
+
+        .image-box {
+            width: 100%;
+            height: min(55vh, 600px);
+            margin-bottom: 45px;
+            overflow: hidden;
+            background: #101e20;
+            border-radius: 4px;
+        }
+
+        .image-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+            transition: opacity .4s ease, transform .7s ease;
+        }
+
+        .image-box img.fade {
+            opacity: 0;
+            transform: scale(1.03);
+        }
+
+        /* CHOICES */
+
+        .question {
+            font-size: 24px;
+            margin-bottom: 25px;
+        }
+
+        .choices {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 18px;
+            max-width: 1000px;
+        }
+
+        .choice {
+            background: #101e20;
+            color: #f4f6f3;
+            border: 1px solid rgba(255,255,255,.16);
+            padding: 25px;
+            text-align: left;
+            cursor: pointer;
+            font-size: 17px;
+            line-height: 1.5;
+            transition: .25s ease;
+        }
+
+        .choice:hover {
+            background: #dfe6e2;
+            color: #071315;
+            transform: translateY(-3px);
+        }
+
+        .choice-number {
+            display: block;
+            color: #7f8d8a;
+            font-size: 12px;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+        }
+
+        /* CONSEQUENCE */
+
+        .consequence {
+            display: none;
+            margin-top: 35px;
+            padding: 30px;
+            border-left: 2px solid #dfe6e2;
+            background: rgba(255,255,255,.04);
+            max-width: 1000px;
+        }
+
+        .consequence.show {
+            display: block;
+            animation: appear .5s ease;
+        }
+
+        .consequence-title {
+            color: #9ba8a6;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            font-size: 12px;
+            margin-bottom: 12px;
+        }
+
+        .consequence-text {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+
+        /* NEXT */
+
+        .next {
+            display: none;
+            margin-top: 30px;
+            padding: 16px 28px;
+            border: none;
+            background: #e9eee9;
+            color: #071315;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        .next.show {
+            display: inline-block;
+        }
+
+        .next:hover {
+            background: white;
+        }
+
+        /* FINAL */
+
+        .final {
+            display: none;
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .final.show {
+            display: block;
+            animation: appear .7s ease;
+        }
+
+        .final h2 {
+            font-size: clamp(40px, 6vw, 80px);
+            margin-bottom: 25px;
+        }
+
+        .final p {
+            color: #aeb9b6;
+            max-width: 700px;
+            margin: auto;
+            font-size: 20px;
+            line-height: 1.7;
+        }
+
+        .restart {
+            margin-top: 35px;
+            padding: 16px 28px;
+            background: #e9eee9;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        @keyframes appear {
+            from {
+                opacity: 0;
+                transform: translateY(15px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* PHONE */
+
+        @media (max-width: 700px) {
+
+            header {
+                height: 65px;
+                padding: 0 5%;
+            }
+
+            .logo {
+                font-size: 14px;
+            }
+
+            main {
+                padding: 35px 5% 60px;
+            }
+
+            .image-box {
+                height: 40vh;
+            }
+
+            .choices {
+                grid-template-columns: 1fr;
+            }
+
+            .choice {
+                padding: 20px;
+            }
+
+            .description {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="story">
+
+    <header>
+        <div class="logo">BELY PAROHOD</div>
+        <div class="counter">
+            <span id="currentNumber">01</span> / 07
+        </div>
+    </header>
+
+    <div class="progress">
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <main>
+
+        <div id="game">
+
+            <div class="label" id="sceneLabel">
+                НАЧАЛО У РЕКИ
+            </div>
+
+            <h1 id="sceneTitle">
+                У тебя есть два желания.
+            </h1>
+
+            <p class="description" id="sceneText">
+                Ты встречаешь деда Момуна у переправы. Он занят хозяйственными делами.
+                Но далеко на горизонте появляется белый пароход.
+            </p>
+
+            <div class="image-box">
+                <img id="sceneImage"
+                     src="images1/scene1.jpg"
+                     alt="Иллюстрация сцены">
+            </div>
+
+            <div class="question">
+                Что ты сделаешь?
+            </div>
+
+            <div class="choices" id="choices"></div>
+
+            <div class="consequence" id="consequence">
+
+                <div class="consequence-title">
+                    Твой выбор
+                </div>
+
+                <div class="consequence-text" id="consequenceText"></div>
+
+            </div>
+
+            <button class="next" id="nextButton">
+                Продолжить →
+            </button>
+
+        </div>
+
+
+        <div class="final" id="final">
+
+            <div class="label">
+                ТВОЯ ИСТОРИЯ
+            </div>
+
+            <h2>Путь окончен.</h2>
+
+            <p id="finalText">
+                Твои решения изменили историю мальчика.
+                Но главное — ты увидел мир его глазами.
+            </p>
+
+            <button class="restart" onclick="restartStory()">
+                Пройти снова
+            </button>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+const scenes = [
+
+    {
+        label: "НАЧАЛО У РЕКИ",
+
+        title: "У тебя есть два желания.",
+
+        text: "Ты встречаешь деда Момуна у переправы. Он занят хозяйственными делами. Но далеко на горизонте появляется белый пароход — твоя заветная мечта.",
+
+        image: "scene1.jpg",
+
+        choices: [
+
+            {
+                text: "Остаться с дедом и помочь ему по хозяйству.",
+                consequence: "Ты сохраняешь связь с дедом и помогаешь семье. Но белый пароход остаётся далёкой мечтой."
+            },
+
+            {
+                text: "Убежать к обрыву и смотреть на белый пароход.",
+                consequence: "Ты следуешь за своей мечтой. Белый пароход становится ещё важнее для твоего внутреннего мира."
+            }
+
+        ]
+    },
+
+    {
+        label: "КОНФЛИКТ В ДОМЕ",
+
+        title: "Оразкул начинает кричать на деда.",
+
+        text: "В доме становится страшно и напряжённо. Ты видишь, как взрослый человек давит на деда Момуна.",
+
+        image: "scene2.jpg",
+
+        choices: [
+
+            {
+                text: "Промолчать и спрятаться.",
+                consequence: "Ты сохраняешь хрупкое спокойствие в доме, но внутри остаётся чувство несправедливости."
+            },
+
+            {
+                text: "Заступиться за деда.",
+                consequence: "Ты пытаешься защитить самого близкого человека. Напряжение в доме становится ещё сильнее."
+            }
+
+        ]
+    },
+
+    {
+        label: "ШКОЛЬНАЯ ДОРОГА",
+
+        title: "Перед тобой длинная дорога в школу.",
+
+        text: "Каждый день нужно идти через степь. Там тебя ждут одноклассники и новый мир. Но дома остаются дед и его легенды.",
+
+        image: "scene3.jpg",
+
+        choices: [
+
+            {
+                text: "Пойти в школу вместе с одноклассниками.",
+                consequence: "Ты открываешь для себя реальный мир и становишься ближе к сверстникам."
+            },
+
+            {
+                text: "Остаться на кордоне с дедом.",
+                consequence: "Ты сохраняешь свой внутренний мир и продолжаешь слушать дедушкины истории."
+            }
+
+        ]
+    },
+
+    {
+        label: "МАТЬ-ОЛЕНЬИХА",
+
+        title: "Взрослые говорят, что это всего лишь сказка.",
+
+        text: "Ты слышишь рассказы о Матери-Оленихе. Для взрослых это легенда. Для тебя она связана с природой, добром и прошлым.",
+
+        image: "scene4.jpg",
+
+        choices: [
+
+            {
+                text: "Поверить словам взрослых.",
+                consequence: "Магия детства постепенно исчезает, а мир становится суровее."
+            },
+
+            {
+                text: "Продолжать верить в легенду.",
+                consequence: "Ты сохраняешь веру в легенду и связь с природой."
+            }
+
+        ]
+    },
+
+    {
+        label: "ОХОТА НА МАРАЛОВ",
+
+        title: "Перед тобой тяжёлый выбор.",
+
+        text: "Оразкул заставляет взрослых участвовать в охоте. Ты понимаешь, что происходит что-то неправильное.",
+
+        image: "scene5.jpg",
+
+        choices: [
+
+            {
+                text: "Подчиниться взрослым.",
+                consequence: "Внешне ты сохраняешь спокойствие, но внутри понимаешь, что произошло против твоих убеждений."
+            },
+
+            {
+                text: "Отказаться и уйти.",
+                consequence: "Ты сохраняешь собственную совесть, но конфликт со взрослыми становится неизбежным."
+            }
+
+        ]
+    },
+
+    {
+        label: "ОТКАЗ ДЕДА",
+
+        title: "Человек, которому ты доверял, оказывается слабее, чем ты думал.",
+
+        text: "Дед оказывается перед тяжёлым выбором. Ты можешь попытаться поговорить с ним или принять его решение.",
+
+        image: "scene6.jpg",
+
+        choices: [
+
+            {
+                text: "Попытаться переубедить деда.",
+                consequence: "Ты не отказываешься от своих убеждений и пытаешься сохранить добро в семье."
+            },
+
+            {
+                text: "Принять решение деда.",
+                consequence: "Ты сохраняешь любовь к деду, но понимаешь, что взрослые тоже могут ошибаться."
+            }
+
+        ]
+    },
+
+    {
+        label: "ПОСЛЕДНИЙ ВЫБОР",
+
+        title: "Ты стоишь перед белым пароходом.",
+
+        text: "Мир вокруг изменился. Белый пароход остаётся символом твоей мечты и надежды. Теперь ты должен решить, каким будет твой путь дальше.",
+
+        image: "scene7.jpg",
+
+        choices: [
+
+            {
+                text: "Вернуться домой и сохранить связь с близкими.",
+                consequence: "Ты выбираешь остаться в реальном мире, несмотря на его жестокость."
+            },
+
+            {
+                text: "Уйти к реке и последовать за своей мечтой.",
+                consequence: "Ты выбираешь мечту и свободу. Белый пароход остаётся для тебя символом надежды."
+            }
+
+        ]
+    }
+
+];
+
+
+let currentScene = 0;
+let selected = false;
+
+
+const sceneLabel = document.getElementById("sceneLabel");
+const sceneTitle = document.getElementById("sceneTitle");
+const sceneText = document.getElementById("sceneText");
+const sceneImage = document.getElementById("sceneImage");
+
+const choicesContainer = document.getElementById("choices");
+
+const consequence = document.getElementById("consequence");
+const consequenceText = document.getElementById("consequenceText");
+
+const nextButton = document.getElementById("nextButton");
+
+const currentNumber = document.getElementById("currentNumber");
+const progressBar = document.getElementById("progressBar");
+
+const game = document.getElementById("game");
+const final = document.getElementById("final");
+
+
+function loadScene() {
+
+    const scene = scenes[currentScene];
+
+    selected = false;
+
+    sceneLabel.textContent = scene.label;
+
+    sceneTitle.textContent = scene.title;
+
+    sceneText.textContent = scene.text;
+
+    currentNumber.textContent =
+        String(currentScene + 1).padStart(2, "0");
+
+    progressBar.style.width =
+        ((currentScene + 1) / scenes.length * 100) + "%";
+
+
+    sceneImage.classList.add("fade");
+
+
+    setTimeout(() => {
+
+        sceneImage.src = "images/" + scene.image;
+
+        sceneImage.classList.remove("fade");
+
+    }, 200);
+
+
+    choicesContainer.innerHTML = "";
+
+    consequence.classList.remove("show");
+
+    nextButton.classList.remove("show");
+
+
+    scene.choices.forEach((choice, index) => {
+
+        const button = document.createElement("button");
+
+        button.className = "choice";
+
+        button.innerHTML = `
+            <span class="choice-number">
+                ВЫБОР 0${index + 1}
+            </span>
+            ${choice.text}
+        `;
+
+        button.addEventListener("click", () => {
+
+            if (selected) return;
+
+            selected = true;
+
+            document
+                .querySelectorAll(".choice")
+                .forEach(btn => {
+                    btn.style.opacity = "0.45";
+                    btn.style.cursor = "default";
+                });
+
+            button.style.opacity = "1";
+
+            consequenceText.textContent =
+                choice.consequence;
+
+            consequence.classList.add("show");
+
+            nextButton.classList.add("show");
+
+        });
+
+        choicesContainer.appendChild(button);
+
+    });
+
+}
+
+
+nextButton.addEventListener("click", () => {
+
+    currentScene++;
+
+    if (currentScene >= scenes.length) {
+
+        game.style.display = "none";
+
+        final.classList.add("show");
+
+        return;
+    }
+
+    loadScene();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+});
+
+
+function restartStory() {
+
+    currentScene = 0;
+
+    final.classList.remove("show");
+
+    game.style.display = "block";
+
+    loadScene();
+
+    window.scrollTo({
+        top: 0,
+        behavior: "smooth"
+    });
+
+}
+
+
+loadScene();
+
+</script>
+
+</body>
+</html>

@@ -1,0 +1,792 @@
+/* =========================================
+   RESET
+========================================= */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    background: #111;
+    color: #f5f2ea;
+    overflow-x: hidden;
+}
+
+
+/* =========================================
+   PAGE
+========================================= */
+
+.story-page {
+    min-height: 100vh;
+    background:
+        radial-gradient(
+            circle at 70% 20%,
+            rgba(255,255,255,0.06),
+            transparent 35%
+        ),
+        #111;
+}
+
+
+/* =========================================
+   HEADER
+========================================= */
+
+.story-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 90px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    padding: 0 5vw;
+
+    z-index: 100;
+
+    border-bottom: 1px solid rgba(255,255,255,0.12);
+
+    background: rgba(17,17,17,0.65);
+
+    backdrop-filter: blur(12px);
+}
+
+.logo {
+    color: #f5f2ea;
+    text-decoration: none;
+
+    font-size: 16px;
+    font-weight: 800;
+
+    letter-spacing: 4px;
+    line-height: 1.05;
+}
+
+.story-counter {
+    font-size: 14px;
+    letter-spacing: 3px;
+    color: rgba(255,255,255,0.5);
+}
+
+.story-counter span:first-child {
+    color: #fff;
+    font-size: 20px;
+}
+
+
+/* =========================================
+   PROGRESS
+========================================= */
+
+.progress {
+    position: fixed;
+
+    top: 89px;
+    left: 0;
+
+    width: 100%;
+    height: 3px;
+
+    background: rgba(255,255,255,0.08);
+
+    z-index: 101;
+}
+
+#progressBar {
+    width: 0%;
+    height: 100%;
+
+    background: #f5f2ea;
+
+    transition: width 0.7s ease;
+}
+
+
+/* =========================================
+   SCREENS
+========================================= */
+
+.screen {
+    display: none;
+
+    min-height: 100vh;
+
+    padding-top: 90px;
+}
+
+.screen.active {
+    display: flex;
+}
+
+
+/* =========================================
+   INTRO
+========================================= */
+
+#introScreen {
+    align-items: center;
+    justify-content: center;
+
+    min-height: 100vh;
+
+    text-align: center;
+
+    background:
+        linear-gradient(
+            rgba(0,0,0,0.35),
+            rgba(0,0,0,0.85)
+        ),
+        radial-gradient(
+            circle at center,
+            #38443c,
+            #111 65%
+        );
+}
+
+.intro-content {
+    width: min(850px, 90%);
+}
+
+.small-label {
+    margin-bottom: 25px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: rgba(255,255,255,0.55);
+}
+
+.intro-content h1 {
+    font-size: clamp(60px, 10vw, 150px);
+
+    line-height: 0.82;
+
+    letter-spacing: -5px;
+
+    font-weight: 800;
+}
+
+.intro-content h1 span {
+    color: transparent;
+
+    -webkit-text-stroke: 1px #f5f2ea;
+}
+
+.intro-content p {
+    max-width: 560px;
+
+    margin: 45px auto;
+
+    color: rgba(255,255,255,0.65);
+
+    font-size: 17px;
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   BUTTON
+========================================= */
+
+.main-button {
+    border: 1px solid rgba(255,255,255,0.4);
+
+    background: transparent;
+
+    color: #fff;
+
+    padding: 18px 30px;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+
+    cursor: pointer;
+
+    transition:
+        background 0.3s ease,
+        color 0.3s ease,
+        transform 0.3s ease;
+}
+
+.main-button span {
+    margin-left: 25px;
+
+    font-size: 20px;
+
+    transition: transform 0.3s ease;
+}
+
+.main-button:hover {
+    background: #f5f2ea;
+    color: #111;
+
+    transform: translateY(-3px);
+}
+
+.main-button:hover span {
+    display: inline-block;
+    transform: translateX(5px);
+}
+
+
+/* =========================================
+   GAME
+========================================= */
+
+#gameScreen {
+    align-items: center;
+
+    padding: 120px 5vw 70px;
+}
+
+.story-layout {
+    width: min(1400px, 100%);
+
+    margin: auto;
+
+    display: grid;
+
+    grid-template-columns: 0.95fr 1.05fr;
+
+    gap: 7vw;
+
+    align-items: center;
+}
+
+
+/* =========================================
+   IMAGE
+========================================= */
+
+.story-image-container {
+    position: relative;
+
+    width: 100%;
+
+    aspect-ratio: 4 / 5;
+
+    overflow: hidden;
+
+    background: #222;
+}
+
+.story-image-container::after {
+    content: "";
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        linear-gradient(
+            to top,
+            rgba(0,0,0,0.55),
+            transparent 45%
+        );
+
+    pointer-events: none;
+}
+
+.story-image-container img {
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+
+    display: block;
+
+    transition:
+        opacity 0.5s ease,
+        transform 1s ease;
+}
+
+.story-image-container:hover img {
+    transform: scale(1.025);
+}
+
+.image-number {
+    position: absolute;
+
+    left: 25px;
+    bottom: 22px;
+
+    z-index: 2;
+
+    font-size: 12px;
+
+    letter-spacing: 4px;
+
+    color: rgba(255,255,255,0.75);
+}
+
+
+/* =========================================
+   STORY CONTENT
+========================================= */
+
+.story-content {
+    max-width: 650px;
+}
+
+.scene-label {
+    margin-bottom: 25px;
+
+    font-size: 12px;
+    font-weight: 700;
+
+    letter-spacing: 5px;
+
+    color: rgba(255,255,255,0.45);
+}
+
+.story-content h2 {
+    font-size: clamp(38px, 5vw, 72px);
+
+    line-height: 0.98;
+
+    letter-spacing: -2px;
+
+    margin-bottom: 30px;
+}
+
+.story-content > p {
+    color: rgba(255,255,255,0.65);
+
+    font-size: 17px;
+
+    line-height: 1.75;
+
+    max-width: 600px;
+
+    margin-bottom: 40px;
+}
+
+
+/* =========================================
+   CHOICES
+========================================= */
+
+.choices {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+.choice {
+    width: 100%;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 20px;
+
+    padding: 20px 22px;
+
+    background: rgba(255,255,255,0.035);
+
+    border: 1px solid rgba(255,255,255,0.15);
+
+    color: #fff;
+
+    text-align: left;
+
+    cursor: pointer;
+
+    font-size: 15px;
+
+    line-height: 1.45;
+
+    transition:
+        background 0.3s ease,
+        border 0.3s ease,
+        transform 0.3s ease;
+}
+
+.choice:hover {
+    background: rgba(255,255,255,0.09);
+
+    border-color: rgba(255,255,255,0.45);
+
+    transform: translateX(6px);
+}
+
+.choice-number {
+    min-width: 32px;
+
+    font-size: 11px;
+
+    letter-spacing: 2px;
+
+    color: rgba(255,255,255,0.4);
+}
+
+.choice.selected {
+    background: rgba(255,255,255,0.12);
+
+    border-color: #fff;
+}
+
+.choice:disabled {
+    cursor: default;
+}
+
+
+/* =========================================
+   CONSEQUENCE
+========================================= */
+
+.consequence {
+    display: none;
+
+    margin-top: 35px;
+
+    padding: 30px;
+
+    border-left: 2px solid #f5f2ea;
+
+    background: rgba(255,255,255,0.04);
+
+    animation: consequenceAppear 0.6s ease;
+}
+
+.consequence.visible {
+    display: block;
+}
+
+.consequence-label {
+    margin-bottom: 15px;
+
+    font-size: 11px;
+    font-weight: 700;
+
+    letter-spacing: 4px;
+
+    color: rgba(255,255,255,0.45);
+}
+
+.consequence-text {
+    font-size: 17px;
+
+    line-height: 1.7;
+
+    color: #f5f2ea;
+
+    margin-bottom: 25px;
+}
+
+.next-button {
+    border: none;
+
+    background: #f5f2ea;
+
+    color: #111;
+
+    padding: 15px 22px;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition: transform 0.3s ease;
+}
+
+.next-button:hover {
+    transform: translateX(5px);
+}
+
+.next-button span {
+    margin-left: 15px;
+}
+
+
+/* =========================================
+   RESULT
+========================================= */
+
+#resultScreen {
+    min-height: 100vh;
+
+    align-items: center;
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 120px 5vw 70px;
+
+    background:
+        radial-gradient(
+            circle at center,
+            #374139,
+            #111 70%
+        );
+}
+
+.result-content {
+    width: min(900px, 100%);
+}
+
+.result-content h1 {
+    font-size: clamp(45px, 8vw, 100px);
+
+    line-height: 0.9;
+
+    letter-spacing: -3px;
+
+    margin-bottom: 35px;
+}
+
+.result-content > p {
+    max-width: 650px;
+
+    margin: 0 auto 50px;
+
+    color: rgba(255,255,255,0.65);
+
+    font-size: 17px;
+
+    line-height: 1.7;
+}
+
+
+/* =========================================
+   VALUES
+========================================= */
+
+.result-values {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 1px;
+
+    margin-bottom: 50px;
+
+    border: 1px solid rgba(255,255,255,0.12);
+}
+
+.result-values div {
+    padding: 25px 15px;
+
+    background: rgba(255,255,255,0.035);
+}
+
+.result-values span {
+    display: block;
+
+    font-size: 10px;
+
+    letter-spacing: 3px;
+
+    color: rgba(255,255,255,0.4);
+
+    margin-bottom: 10px;
+}
+
+.result-values strong {
+    font-size: 35px;
+}
+
+
+/* =========================================
+   ANIMATION
+========================================= */
+
+@keyframes consequenceAppear {
+
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+}
+
+
+/* =========================================
+   TABLET
+========================================= */
+
+@media (max-width: 900px) {
+
+    .story-layout {
+        grid-template-columns: 1fr;
+
+        gap: 45px;
+    }
+
+    .story-image-container {
+        max-height: 500px;
+
+        aspect-ratio: 16 / 10;
+    }
+
+    .story-content {
+        max-width: none;
+    }
+
+    .story-content h2 {
+        font-size: 48px;
+    }
+
+}
+
+
+/* =========================================
+   PHONE
+========================================= */
+
+@media (max-width: 600px) {
+
+    .story-header {
+        height: 70px;
+
+        padding: 0 20px;
+    }
+
+    .progress {
+        top: 69px;
+    }
+
+    .screen {
+        padding-top: 70px;
+    }
+
+    #gameScreen {
+        padding:
+            100px 20px 50px;
+    }
+
+    .logo {
+        font-size: 12px;
+
+        letter-spacing: 3px;
+    }
+
+    .story-counter {
+        font-size: 11px;
+    }
+
+    .story-counter span:first-child {
+        font-size: 16px;
+    }
+
+    .intro-content {
+        width: 90%;
+    }
+
+    .intro-content h1 {
+        font-size: 65px;
+
+        letter-spacing: -3px;
+    }
+
+    .intro-content p {
+        margin: 30px auto;
+
+        font-size: 15px;
+    }
+
+    .main-button {
+        padding: 16px 20px;
+
+        width: 100%;
+    }
+
+    .story-image-container {
+        aspect-ratio: 4 / 3;
+    }
+
+    .story-content h2 {
+        font-size: 38px;
+
+        letter-spacing: -1.5px;
+    }
+
+    .story-content > p {
+        font-size: 15px;
+    }
+
+    .choice {
+        padding: 17px;
+
+        font-size: 14px;
+
+        gap: 13px;
+    }
+
+    .consequence {
+        padding: 22px;
+
+        margin-top: 25px;
+    }
+
+    .consequence-text {
+        font-size: 15px;
+    }
+
+    .next-button {
+        width: 100%;
+    }
+
+    #resultScreen {
+        padding:
+            100px 20px 50px;
+    }
+
+    .result-content h1 {
+        font-size: 50px;
+    }
+
+    .result-values {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+}
+
+
+/* =========================================
+   SMALL PHONE
+========================================= */
+
+@media (max-width: 380px) {
+
+    .intro-content h1 {
+        font-size: 52px;
+    }
+
+    .story-content h2 {
+        font-size: 32px;
+    }
+
+    .result-content h1 {
+        font-size: 42px;
+    }
+
+}
